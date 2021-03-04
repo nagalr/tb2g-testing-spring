@@ -7,6 +7,8 @@ import org.springframework.samples.petclinic.sfg.HearingInterpreter;
 import org.springframework.samples.petclinic.sfg.LaurelConfig;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * Created by ronnen on 04-Mar-2021
  */
@@ -19,5 +21,7 @@ class HearingInterpreterLaurelTest {
 
     @Test
     void whatIheard() {
+        String word = hearingInterpreter.whatIheard();
+        assertEquals("Laurel", word);
     }
 }
