@@ -57,6 +57,5 @@ class NotProfileCondition implements Condition {
 		}
 		return true;
 	}
-
 }
 
