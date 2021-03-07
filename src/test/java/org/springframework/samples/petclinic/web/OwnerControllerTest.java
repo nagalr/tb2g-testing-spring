@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 // This test-class based on xml configurations.
+// the 'clinicService' Mock definition in 'mvc-test-config.xml'
 @SpringJUnitWebConfig(locations = {"classpath:spring/mvc-test-config.xml", "classpath:spring/mvc-core-config.xml"})
 class OwnerControllerTest {
 
