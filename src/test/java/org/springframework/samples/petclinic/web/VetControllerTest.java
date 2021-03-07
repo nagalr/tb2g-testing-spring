@@ -55,7 +55,8 @@ class VetControllerTest {
 
     @Test
     void testControllerShowList() throws Exception {
-        mockMvc.perform(get("/vets.html"));
+        mockMvc.perform(get("/vets.html"))
+                .andExpect(status().isOk());
     }
 
     @Test
