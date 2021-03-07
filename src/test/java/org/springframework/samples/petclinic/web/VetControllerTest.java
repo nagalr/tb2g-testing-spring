@@ -53,6 +53,13 @@ class VetControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
+    /*
+     Testing the MockMvc here.
+     perform a 'get' against the given url "/vets.html"
+     verify that the return status is 'OK'
+     verify that the model added the attribute 'vets'
+     verify that the controller returned the expected view: "vets/vetList"
+     */
     @Test
     void testControllerShowList() throws Exception {
         mockMvc.perform(get("/vets.html"))
