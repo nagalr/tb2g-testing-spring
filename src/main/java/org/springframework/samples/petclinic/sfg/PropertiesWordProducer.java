@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@Profile("externalized")
+@Profile({"externalized", "laurel-properties"})
 @Primary // choosing 'externalized' profile - will choose this one
 public class PropertiesWordProducer implements WordProducer {
 

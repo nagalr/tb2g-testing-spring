@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestPropertySource("classpath:laurel.properties")
 @ActiveProfiles("laurel-properties")
-@SpringJUnitConfig(classes = PropertiesWordProducerTest.TestConfig.class)
-class PropertiesWordProducerTest {
+@SpringJUnitConfig(classes = PropertiesLaurelTest.TestConfig.class)
+class PropertiesLaurelTest {
 
     @Configuration
     @ComponentScan("org.springframework.samples.petclinic.sfg")
