@@ -57,7 +57,8 @@ class VetControllerTest {
     void testControllerShowList() throws Exception {
         mockMvc.perform(get("/vets.html"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("vets"));
+                .andExpect(model().attributeExists("vets"))
+                .andExpect(view().name("vets/vetList"));
     }
 
     @Test
