@@ -11,7 +11,6 @@ import org.springframework.samples.petclinic.model.Vets;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -56,9 +54,13 @@ class VetControllerTest {
     /*
      Testing the MockMvc here.
      perform a 'get' against the given url "/vets.html"
-     verify that the return status is 'OK'
-     verify that the model added the attribute 'vets'
-     verify that the controller returned the expected view: "vets/vetList"
+     - verify that the return status is 'OK'
+     - verify that the model added the attribute 'vets'
+     - verify that the controller returned the expected view: "vets/vetList".
+     This test uses SpringMVC framework with Mock Objects to exercise the dispatcher servlet,
+     find the url, uses SpringMVC model, takes the response back from the controller
+     and return it to our test, where we can make the assertions to check status (OK),
+     that the needed model attribute indeed added, and the return view name is as expected.
      */
     @Test
     void testControllerShowList() throws Exception {

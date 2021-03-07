@@ -61,6 +61,4 @@ public class VetController {
         vets.getVetList().addAll(this.clinicService.findVets());
         return vets;
     }
-
-
 }
