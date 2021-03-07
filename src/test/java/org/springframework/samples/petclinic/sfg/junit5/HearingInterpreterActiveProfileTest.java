@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Created by ronnen on 07-Mar-2021
  */
 
-@ActiveProfiles("yanny")
+@ActiveProfiles("yanny") // so 'yanny' profile from 'sfg' will pick up, not configurations from 'sfg' of the test package
 @SpringJUnitConfig(classes = HearingInterpreterActiveProfileTest.TestConfig.class)
 public class HearingInterpreterActiveProfileTest {
 
