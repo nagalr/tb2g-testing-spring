@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@Primary
 @Profile("externalized")
+@Primary // choosing 'externalized' profile - will choose this one
 public class PropertiesWordProducer implements WordProducer {
 
     private String word;
