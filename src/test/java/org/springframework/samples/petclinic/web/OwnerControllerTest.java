@@ -27,14 +27,22 @@ class OwnerControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
+
     }
 
+    /*
+     'result' is Empty, the clinicService Mock returns nothing
+     hence, the view "owners/findOwners" will return.
+     passing a parameter to the test here ('lastName')
+    */
     @Test
     void testFindByNameNotFound() throws Exception {
+
         mockMvc.perform(get("/owners")
                 .param("lastName", "Do not find me"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists()); // to continue..
+                .andExpect(model().attributeExists())
+                .andExpect(view().name("owners/findOwners"));
     }
 
     @Test
