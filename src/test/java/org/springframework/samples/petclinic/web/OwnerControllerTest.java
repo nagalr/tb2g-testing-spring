@@ -39,7 +39,7 @@ class OwnerControllerTest {
     void testFindByNameNotFound() throws Exception {
 
         mockMvc.perform(get("/owners")
-                .param("lastName", "Do not find me"))
+                .param("lastName", "Don't find me"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists())
                 .andExpect(view().name("owners/findOwners"));
