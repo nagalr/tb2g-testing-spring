@@ -77,9 +77,49 @@ class OwnerControllerTest {
 
         //then
         then(clinicService).should(times(1)).findOwnerByLastName(anyString());
+        then(clinicService).shouldHaveNoMoreInteractions();
 
         mockMvc.perform(get("/owners"))
                 .andExpect(redirectedUrl("/owners/1"));
+    }
+
+    @Test
+    void testFindByNameFoundTwo() throws Exception {
+
+        Collection<Owner> owners = new HashSet<>();
+
+        Owner owner = new Owner();
+        owner.setAddress("");
+        owner.setCity("");
+        owner.setTelephone("");
+        owner.setFirstName("");
+        owner.setLastName("");
+        owner.setId(1);
+
+        Owner owner2 = new Owner();
+        owner2.setAddress("");
+        owner2.setCity("");
+        owner2.setTelephone("");
+        owner2.setFirstName("");
+        owner2.setLastName("");
+        owner2.setId(2);
+
+        owners.add(owner);
+        owners.add(owner2);
+
+        // given
+        given(clinicService.findOwnerByLastName(anyString())).willReturn(owners);
+
+        // when
+        ownerController.processFindForm(owner, bindingResult, new HashMap<>());
+
+        //then
+        then(clinicService).should(times(1)).findOwnerByLastName(anyString());
+        then(clinicService).shouldHaveNoMoreInteractions();
+
+        mockMvc.perform(get("/owners"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/ownersList"));
     }
 
     @Test
