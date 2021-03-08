@@ -9,7 +9,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 // This test-class based on xml configurations.
 // the 'clinicService' Mock definition in 'mvc-test-config.xml'
@@ -27,29 +28,20 @@ class OwnerControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
-
     }
 
-    /*
-     'result' is Empty, the clinicService Mock returns nothing
-     hence, the view "owners/findOwners" will return.
-     passing a parameter to the test here ('lastName')
-    */
     @Test
     void testFindByNameNotFound() throws Exception {
-
         mockMvc.perform(get("/owners")
-                .param("lastName", "Don't find me"))
+                .param("lastName", "James"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists())
                 .andExpect(view().name("owners/findOwners"));
     }
 
     @Test
-    void initCreationForm() throws Exception {
+    void initCreationFormTest() throws Exception {
         mockMvc.perform(get("/owners/new"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("owner"))
                 .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
 }
