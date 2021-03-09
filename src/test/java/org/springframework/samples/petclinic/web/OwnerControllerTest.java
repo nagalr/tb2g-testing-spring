@@ -44,7 +44,7 @@ class OwnerControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
-            }
+    }
 
     @Test
     void testFindByNameNotFound() throws Exception {
