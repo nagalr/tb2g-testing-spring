@@ -174,4 +174,18 @@ class OwnerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
+
+    @Test
+    void processUpdateOwnerFormNoErrorsTest() throws Exception {
+        mockMvc.perform(post("/owners/{ownerId}/edit", 1)
+                    .param("firstName", "name")
+                    .param("lastName", "last")
+                    .param("address", "addre")
+                    .param("city", "city")
+                    .param("telephone", "000")
+                    .param("Id", "2")
+
+                        )
+                .andExpect(redirectedUrl("/owners/1"));
+    }
 }
