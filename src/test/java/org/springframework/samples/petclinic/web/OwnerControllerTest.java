@@ -45,14 +45,21 @@ class OwnerControllerTest {
                 .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
 
+    /*
+     not including here Owner Object properties populated with values,
+     hence, 'BindingResult' will have errors, first 'if' entry
+    */
     @Test
     void processCreationFormResultHasErrorsTest() throws Exception {
-
         mockMvc.perform(post("/owners/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
 
+    /*
+     Populating the Owner Object properties to hold the '@Valid' restrictions.
+     'BindingResult' will have no errors, the 'else' scenario will occur.
+     */
     @Test
     void processCreationFormResultNoErrorsTest() throws Exception {
         mockMvc.perform(post("/owners/new")
