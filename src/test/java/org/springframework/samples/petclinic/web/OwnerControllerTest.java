@@ -3,24 +3,42 @@ package org.springframework.samples.petclinic.web;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @SpringJUnitWebConfig(locations = {"classpath:spring/mvc-test-config.xml", "classpath:spring/mvc-core-config.xml"})
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
 
+    @Mock
+    BindingResult bindingResult;
+
+    // its mock definition located in the xml file
     @Autowired
     ClinicService clinicService;
 
+    @InjectMocks
     @Autowired
     OwnerController ownerController;
 
@@ -76,10 +94,31 @@ class OwnerControllerTest {
     }
 
     @Test
-    void testFindByNameNotFound() throws Exception {
+    void processFindFormNotFoundTest() throws Exception {
         mockMvc.perform(get("/owners")
                     .param("lastName", "Dont find ME!"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("owners/findOwners"));
+    }
+
+    @Test
+    void processFindFormFoundOneTest() throws Exception {
+        Collection<Owner> owners = new HashSet<>();
+        Owner owner = new Owner();
+        owner.setId(1);
+
+        owners.add(owner);
+
+        // given
+        given(clinicService.findOwnerByLastName(anyString())).willReturn(owners);
+
+        // when
+        ownerController.processFindForm(new Owner(), bindingResult, new HashMap<>());
+
+        // then
+        then(clinicService).should(times(1)).findOwnerByLastName(anyString());
+
+        mockMvc.perform(get("/owners"))
+                .andExpect(redirectedUrl("/owners/1"));
     }
 }
