@@ -12,12 +12,14 @@ import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -30,6 +32,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringJUnitWebConfig(locations = {"classpath:spring/mvc-test-config.xml", "classpath:spring/mvc-core-config.xml"})
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
+
+    @Mock
+    Model model;
 
     @Mock
     BindingResult bindingResult;
@@ -144,5 +149,22 @@ class OwnerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("selections"))
                 .andExpect(view().name("owners/ownersList"));
+    }
+
+    @Test
+    void initUpdateOwnerFormTest() throws Exception {
+        // given
+        given(clinicService.findOwnerById(anyInt())).willReturn(new Owner());
+
+        // when
+        ownerController.initUpdateOwnerForm(1, model);
+
+        // then
+        then(clinicService).should(times(1)).findOwnerById(anyInt());
+
+        mockMvc.perform(get("/owners/{ownerId}/edit", 1))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("owner"))
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
 }
