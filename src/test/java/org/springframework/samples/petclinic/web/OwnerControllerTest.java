@@ -87,13 +87,13 @@ class OwnerControllerTest {
     @Test
     void processCreationFormResultNoErrorsTest() throws Exception {
         mockMvc.perform(post("/owners/new")
-                    .param("address", "adss")
-                    .param("city", "cy")
-                    .param("telephone", "000")
-                    .param("firstName", "first_name")
-                    .param("lastName", "last_name")
-                    .param("Id","1")
-                        )
+                .param("address", "adss")
+                .param("city", "cy")
+                .param("telephone", "000")
+                .param("firstName", "first_name")
+                .param("lastName", "last_name")
+                .param("Id", "1")
+        )
                 .andExpect(redirectedUrl("/owners/1"));
     }
 
@@ -108,7 +108,7 @@ class OwnerControllerTest {
     @Test
     void processFindFormNotFoundTest() throws Exception {
         mockMvc.perform(get("/owners")
-                    .param("lastName", "Dont find ME!"))
+                .param("lastName", "Dont find ME!"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("owners/findOwners"));
     }
@@ -185,13 +185,31 @@ class OwnerControllerTest {
     @Test
     void processUpdateOwnerFormNoErrorsTest() throws Exception {
         mockMvc.perform(post("/owners/{ownerId}/edit", 1)
-                    .param("firstName", "name")
-                    .param("lastName", "last")
-                    .param("address", "addre")
-                    .param("city", "city")
-                    .param("telephone", "000")
-                    .param("Id", "2")
-                        )
+                .param("firstName", "name")
+                .param("lastName", "last")
+                .param("address", "addre")
+                .param("city", "city")
+                .param("telephone", "000")
+                .param("Id", "2")
+        )
                 .andExpect(redirectedUrl("/owners/1"));
+    }
+
+    @Test
+    void showOwnerTest() throws Exception {
+        Owner owner = new Owner();
+        owner.setId(1);
+
+        // given
+        given(clinicService.findOwnerById(anyInt())).willReturn(owner);
+
+        // when
+        ownerController.showOwner(1);
+
+        // then
+        then(clinicService).should(times(1)).findOwnerById(anyInt());
+
+        mockMvc.perform(get("/owners/{ownerId}", 1))
+                .andExpect(status().isOk());
     }
 }
