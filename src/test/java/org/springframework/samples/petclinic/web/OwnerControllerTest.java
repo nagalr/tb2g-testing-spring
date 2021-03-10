@@ -3,16 +3,13 @@ package org.springframework.samples.petclinic.web;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.service.ClinicService;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BindingResult;
 
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -21,12 +18,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
 
-    BindingResult bindingResult = mock(BindingResult.class);
-
     @Autowired
     ClinicService clinicService;
 
-    @InjectMocks
     @Autowired
     OwnerController ownerController;
 
@@ -71,6 +65,14 @@ class OwnerControllerTest {
                     .param("Id","1")
                         )
                 .andExpect(redirectedUrl("/owners/1"));
+    }
+
+    @Test
+    void initFindFormTest() throws Exception {
+        mockMvc.perform(get("/owners/find"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("owner"))
+                .andExpect(view().name("owners/findOwners"));
     }
 
     @Test
