@@ -47,7 +47,7 @@ class OwnerControllerTest {
 
     /*
      not including here Owner Object properties populated with values,
-     hence, 'BindingResult' will have errors, first 'if' entry
+     hence, 'BindingResult' will have errors, entering the 'if' block.
     */
     @Test
     void processCreationFormResultHasErrorsTest() throws Exception {
@@ -58,7 +58,7 @@ class OwnerControllerTest {
 
     /*
      Populating the Owner Object properties to hold the '@Valid' restrictions.
-     'BindingResult' will have no errors, the 'else' scenario will occur.
+     'BindingResult' will have no errors, so the 'else' scenario will occur.
      */
     @Test
     void processCreationFormResultNoErrorsTest() throws Exception {
