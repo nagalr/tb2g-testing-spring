@@ -46,6 +46,14 @@ class OwnerControllerTest {
     }
 
     @Test
+    void processCreationFormResultHasErrorsTest() throws Exception {
+
+        mockMvc.perform(post("/owners/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"));
+    }
+
+    @Test
     void processCreationFormResultNoErrorsTest() throws Exception {
         mockMvc.perform(post("/owners/new")
                     .param("address", "adss")
@@ -56,14 +64,6 @@ class OwnerControllerTest {
                     .param("Id","1")
                         )
                 .andExpect(redirectedUrl("/owners/1"));
-    }
-
-    @Test
-    void processCreationFormResultHasErrorsTest() throws Exception {
-
-        mockMvc.perform(post("/owners/new"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
 
     @Test
