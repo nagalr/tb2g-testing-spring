@@ -121,4 +121,28 @@ class OwnerControllerTest {
         mockMvc.perform(get("/owners"))
                 .andExpect(redirectedUrl("/owners/1"));
     }
+
+    @Test
+    void processFindFormFoundMultipleTest() throws Exception {
+        Collection<Owner> owners = new HashSet<>();
+        Owner owner = new Owner();
+        Owner owner2 = new Owner();
+
+        owners.add(owner);
+        owners.add(owner2);
+
+        // given
+        given(clinicService.findOwnerByLastName(anyString())).willReturn(owners);
+
+        // when
+        ownerController.processFindForm(new Owner(), bindingResult, new HashMap<>());
+
+        // then
+        then(clinicService).should(times(1)).findOwnerByLastName(anyString());
+
+        mockMvc.perform(get("/owners"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("selections"))
+                .andExpect(view().name("owners/ownersList"));
+    }
 }
