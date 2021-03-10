@@ -167,4 +167,11 @@ class OwnerControllerTest {
                 .andExpect(model().attributeExists("owner"))
                 .andExpect(view().name("owners/createOrUpdateOwnerForm"));
     }
+
+    @Test
+    void processUpdateOwnerFormHasErrorsTest() throws Exception {
+        mockMvc.perform(post("/owners/{ownerId}/edit", 1))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"));
+    }
 }
