@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.web;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -52,6 +54,11 @@ class OwnerControllerTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
+    }
+
+    @AfterEach
+    void tearDown() {
+        reset(clinicService);
     }
 
     @Test
@@ -184,7 +191,6 @@ class OwnerControllerTest {
                     .param("city", "city")
                     .param("telephone", "000")
                     .param("Id", "2")
-
                         )
                 .andExpect(redirectedUrl("/owners/1"));
     }
