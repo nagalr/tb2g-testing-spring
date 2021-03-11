@@ -119,10 +119,43 @@ class OwnerControllerTest {
     }
 
     /*
-     testing the 'get' route of "/owners/find"
-     checking the status isOK(), an attribute added to the model,
-     and the right view returned.
+     testing the 'post' route of "/owners/new" with our creation of validation errors.
+     checking here a new scenario in which a few owner objects properties missing,
+     (removing 'address' and 'city' properties population from the previous test)
+     and checking the 'model' object to see if it holds the right errors
+     that we created in purpose, related to the validations (@Valid)
+     of the Owner object properties.
+     Notice the 'model' object (or its mock) is not a parameter to the
+     method under test, but its there.
+     This is an example of server-side form validation using Spring @Valid
+     and the object properties-population, meaning, we are posting to the form,
+     we are getting errors, so returning the same url of the form
+     (the same view of the form), ideally, the front-end will re-render the form,
+     and then posting these errors.
+     Example of server-side validation where a request comes to the server,
+     and comes back, and then we have the 'error' object to work with in the 'view' layer
+     to display the proper error information.
      */
+    @Test
+    void processCreationFormResultWithOurCreatedErrorsTest() throws Exception {
+        mockMvc.perform(post("/owners/new")
+                    .param("telephone", "000")
+                    .param("firstName", "first_name")
+                    .param("lastName", "last_name")
+                    .param("Id", "1")
+                    )
+                .andExpect(model().attributeHasErrors("owner"))
+                .andExpect(model().attributeHasFieldErrors("owner","city"))
+                .andExpect(model().attributeHasFieldErrors("owner","address"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"));
+    }
+
+    /*
+         testing the 'get' route of "/owners/find"
+         checking the status isOK(), an attribute added to the model,
+         and the right view returned.
+         */
     @Test
     void initFindFormTest() throws Exception {
         mockMvc.perform(get("/owners/find"))
