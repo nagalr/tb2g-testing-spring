@@ -115,6 +115,7 @@ class OwnerControllerTest {
                     .param("lastName", "last_name")
                     .param("Id", "1")
                      )
+                .andExpect(status().is3xxRedirection()) // verify a redirection
                 .andExpect(redirectedUrl("/owners/1"));
     }
 
@@ -206,6 +207,7 @@ class OwnerControllerTest {
         then(clinicService).should(times(1)).findOwnerByLastName(anyString());
 
         mockMvc.perform(get("/owners"))
+                .andExpect(status().is3xxRedirection()) // verify a redirection
                 .andExpect(redirectedUrl("/owners/1"));
     }
 
@@ -313,6 +315,7 @@ class OwnerControllerTest {
                     .param("telephone", "000")
                     .param("Id", "2")
                      )
+                .andExpect(status().is3xxRedirection()) // verify a redirection
                 .andExpect(redirectedUrl("/owners/1"));
     }
 
