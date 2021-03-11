@@ -317,13 +317,35 @@ class OwnerControllerTest {
     }
 
     /*
-     testing the route "/owners/{ownerId}". ('showOwner' method)
-     define here 'clinicService' (mock) on 'findOwnerById' call to return
-     a pre-defined Owner object. verify the mock interactions.
-     mockMvc 'perform' here on this route. since we have a @PathVariable
-     we pass the value '1' as argument to 'perform', as a @PathVariable value.
-     checking the status isOK().
+     the same test method as the previous one with our created validation 'errors'.
+     testing a validation-error scenario of the 'post' route "/owners/{ownerId}/edit",
+     using our created validation errors on the owner object,
+     (meaning, removing two properties-population: 'city' and 'address')
+     and using the 'model()' errors attributes to validate our created errors.
      */
+    @Test
+    void processUpdateOwnerFormWithOurCreatedErrorsTest() throws Exception {
+        mockMvc.perform(post("/owners/{ownerId}/edit", 1)
+                    .param("firstName", "name")
+                    .param("lastName", "last")
+                    .param("telephone", "000")
+                    .param("Id", "2")
+                    )
+                .andExpect(model().attributeHasErrors("owner"))
+                .andExpect(model().attributeHasFieldErrors("owner","city"))
+                .andExpect(model().attributeHasFieldErrors("owner","address"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/createOrUpdateOwnerForm"));
+    }
+
+    /*
+         testing the route "/owners/{ownerId}". ('showOwner' method)
+         define here 'clinicService' (mock) on 'findOwnerById' call to return
+         a pre-defined Owner object. verify the mock interactions.
+         mockMvc 'perform' here on this route. since we have a @PathVariable
+         we pass the value '1' as argument to 'perform', as a @PathVariable value.
+         checking the status isOK().
+         */
     @Test
     void showOwnerTest() throws Exception {
         Owner owner = new Owner();
