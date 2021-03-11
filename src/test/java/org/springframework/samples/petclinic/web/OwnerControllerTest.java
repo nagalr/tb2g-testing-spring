@@ -51,6 +51,9 @@ class OwnerControllerTest {
 
     MockMvc mockMvc;
 
+    /*
+     beforeEach method test, build mockMvc.
+     */
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(ownerController).build();
